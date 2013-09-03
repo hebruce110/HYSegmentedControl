@@ -2,7 +2,7 @@
 //  ICPSegmentedControl.m
 //
 //  Created by Yuan on 13-9-3.
-//  http://www.heyuan110.com
+//
 
 #import "HYSegmentedControl.h"
 
@@ -35,6 +35,7 @@
     _itemBackGroundColor = [UIColor whiteColor];
     _textColor = kRGBA(74.0,76.0,76.0,1.0);
     _textSelectColor = [UIColor whiteColor];
+    _font = [UIFont systemFontOfSize:14.0f];
 }
 
 - (void)setFrameWidth:(CGFloat)width{
@@ -72,7 +73,6 @@
             [self addSubview:button];
         }
         [self updateSegments];
-        [self setSelectedIndex:0];
     }
     return self;
 }
@@ -106,6 +106,7 @@
 #pragma mark - Setters
 -(void)updateSegments
 {
+    _currentSelected=-1;
     self.backgroundColor = _bgColor;
     self.layer.cornerRadius=_cornerRadius;
     self.layer.masksToBounds=YES;
@@ -118,7 +119,8 @@
     for (int i = 0; i < [_segments count]; i++) {
         UIButton *button = (UIButton *)_segments[i];
         [button setBackgroundColor:_itemBackGroundColor];
-
+        [button.titleLabel setFont:_font];
+        
         marginLeft+= _borderWidth;
         CGRect frame = CGRectMake(marginLeft, _borderWidth, buttonWith,buttonHeight);
         [button setFrame:frame];
@@ -132,6 +134,7 @@
             [self roundCorners:UIRectCornerTopRight|UIRectCornerBottomRight view:button];
         }
     }
+    [self setSelectedIndex:0];
 }
 
 //圆角弧度
@@ -170,6 +173,13 @@
 //选中时的字体颜色
 -(void)setTextSelectColor:(UIColor *)textSelectColor{
     _textSelectColor = textSelectColor;
+    [self updateSegments];
+}
+
+//字体
+- (void)setFont:(UIFont *)font
+{
+    _font = font;
     [self updateSegments];
 }
 
